@@ -1,0 +1,77 @@
+
+CXXSRCS    = lxdata.cxx interpolate.cxx
+TARGET     = lxdata
+INTERFACE  = lxdata.i
+INTERFACEDIR = ./
+INCLUDES   = -I${HEADAS}/include
+LIBS       = -L${HEADAS}/lib -latFunctions -lcfitsio -lm 
+
+INTERFACEPATH = $(INTERFACEDIR)$(INTERFACE)
+
+
+IWRAP      = $(INTERFACE:.i=_wrap.i)
+ISRCS      = $(IWRAP:.i=.c)
+ICXXSRCS   = $(IWRAP:.i=.cxx)
+IOBJS      = $(IWRAP:.i=.o)
+
+OBJS      = $(SRCS:.c=.o) $(CXXSRCS:.cxx=.o)
+
+LIBPREFIX  =
+
+
+CC         = gcc
+CXX        = g++
+CFLAGS     = 
+#CPP_DLLIBS = 
+
+#SO=.so
+LDSHARED= gcc -shared
+CCSHARED= -fpic
+#CXXSHARED=      gcc -shared
+CXXSHARED= g++ -shared 
+
+
+SWIG       = swig
+SWIGPYTHON = $(SWIG) -python
+
+
+PYTHON_INCLUDE= -I/usr/include/python2.7 
+PYTHON_LIB    = 
+#PYTHON	        = python
+#PYTHON_DLNK   = 
+#PYTHON_LINK   = -lpython2.7
+PYTHON_SO     = .so
+
+
+
+all::	python_cpp
+
+clean:: python_clean
+	rm -f $(TARGET).py
+
+cleaner:: clean
+
+#check: all
+#	$(MAKE) -f Makefile.template.in python_run
+
+
+python_cpp: 
+	$(SWIGPYTHON) -c++ $(INTERFACEPATH)
+	$(CXX) -c $(CCSHARED) $(CFLAGS) $(ICXXSRCS) $(SRCS) $(CXXSRCS) $(INCLUDES) $(PYTHON_INCLUDE)
+	$(CXXSHARED) $(CFLAGS) $(OBJS) $(IOBJS) $(LIBS) -o $(LIBPREFIX)_$(TARGET)$(PYTHON_SO)
+
+python_clean:
+	rm -f *_wrap* *~ .~* mypython *.pyc
+	rm -f core 
+	rm -f *.o *.so *.so
+
+
+#DEST_DIR = ${HOME}/pylib_${EXT}_ft$(FTOOLS_V)
+#DEST_DIR = ${MXSOFT}/pylib
+
+TARGET_FILES = lxdata.py _lxdata.so 
+
+install: all
+	if [ ! -d $(DEST_DIR) ]; then mkdir $(DEST_DIR); fi
+	install ${TARGET_FILES} $(DEST_DIR)
+
