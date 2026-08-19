@@ -4,7 +4,7 @@
 #include <cmath>
 
 #include "fitsio.h"
-#include "atFunctions.h"
+//#include "atFunctions.h"
 
 #include "interpolate.h"
 #include "lxdata.h"
