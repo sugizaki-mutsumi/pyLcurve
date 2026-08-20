@@ -23,6 +23,11 @@ lxdat_gsc.read_gsclcfile("glcbin24.0h_regbg_hv0.fits", "LCDAT_PIBAND4", snr_llim
 lxdat_gsc.set_integlxpow(0.0, 0.0, 6./7.)
 
 for idx in range(nbuf) :
-    print(lxdat_gsc.get_mjd(idx), lxdat_gsc.get_lx(idx), lxdat_gsc.get_integlxpow(idx))
+    #print(lxdat_gsc.get_mjd(idx), lxdat_gsc.get_lx(idx), lxdat_gsc.get_lxe(idx), lxdat_gsc.get_integlxpow(idx))
+    mjd  = lxdat_gsc.get_mjd(idx)
+    lx   = lxdat_gsc.calc_lx(mjd)
+    lxe  = lxdat_gsc.calc_lxe(mjd)
+    integlxpow = lxdat_gsc.calc_integlxpow(mjd);
+    print(mjd, lx, lxe, integlxpow)
     
 

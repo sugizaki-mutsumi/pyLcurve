@@ -100,7 +100,9 @@ int Lxdata::read_textfile(char *lcfname, double f2lx){
   idx = 0;
   while( fgets(line, sizeof(line), fp) != NULL){
     if (line[0]=='#') continue;
-    if(sscanf(line, "%lf %lf", &vmjd[idx], &vlx[idx])==2){
+    if(sscanf(line, "%lf %lf %lf", &vmjd[idx], &vlx[idx], &vlxe[idx])==3){
+      idx++;
+    } else if(sscanf(line, "%lf %lf", &vmjd[idx], &vlx[idx])==2){
       vlxe[idx]=0.0;
       idx++;
     }

@@ -41,6 +41,7 @@ class Lxdata {
 
   double get_mjd(int idx){return m_mjd[idx];}
   double get_lx(int idx){return m_lx[idx];}
+  double get_lxe(int idx){return m_lxe[idx];}
   double get_lxpow(int idx){return m_lxpow[idx];}
   double get_integlxpow(int idx){return m_integlxpow[idx];}
 
